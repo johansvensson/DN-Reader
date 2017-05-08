@@ -10,9 +10,15 @@ public class RssParser {
     private String URLtoParse;
     private ArrayList<NewsItem> news;
 
-    public RSSParser(String url){URLtoParse = url;}
+    public RssParser(String url){URLtoParse = url;}
 
     public ArrayList<NewsItem> getNews(){return news;}
+
+    
+    // TODO fix network (use thread)
+    // TODO parse and read Xml
+    // TODO print news in console
+    // TODO conntect news to gui
 
 
 
