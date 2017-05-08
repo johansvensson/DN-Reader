@@ -20,6 +20,7 @@ public class RssParser {
     private String URLtoParse;
     private ArrayList<NewsItem> news;
     private static final String ns = null;
+    public volatile boolean parserWorking = true;
 
     public RssParser(String url){URLtoParse = url;}
 
@@ -40,24 +41,48 @@ public class RssParser {
                     continue;
                 }
                 String name = parser.getName();
-                // Searching for next item-tag, and thereby next item.
+                // Searching for next item-tag, and passing it to the method for extracting the data.
                 if (name.equals("item")) {
                     news.add(readItem(parser));
                 }else{
                     // Function used to move parser to next tag of interest
                     skip(parser);
                 }
-                // Alert when parsing is done.
             }
+            // Alert when parsing is done.
+            // Connected to an while(boolean) in the main act.
+            parserWorking = false;
         }catch(Exception e){
             Log.d("Error", "Excep in parse()-function");
+            Log.e("Exc", "Exception: " + e.getMessage());
         }
     }
 
-    private NewsItem readItem(XmlPullParser parser){
-
+    private NewsItem readItem(XmlPullParser parser) throws XmlPullParserException, IOException{
         // Return a full object ready to put in a list.
-        return null;
+        // Passing on parts of the item to their respective read-method.
+        // Has a skip method if a tag not match the three tags we are looking for.
+        parser.require(XmlPullParser.START_TAG, ns, "item");
+        String title = null;
+        String description = null;
+        String url = null;
+        while(parser.next() != XmlPullParser.END_TAG){
+            if(parser.getEventType() != XmlPullParser.START_TAG){
+                continue;
+            }
+            String name = parser.getName();
+            if(name.equals("title")){
+                title = readTitle(parser);
+            }else if(name.equals("description")){
+                description = readDescription(parser);
+            }else if(name.equals("link")){
+                url = readLink(parser);
+            }else{
+                skip(parser);
+            }
+
+        }
+        return new NewsItem(title,description,url);
     }
 
     // Process title-tags
