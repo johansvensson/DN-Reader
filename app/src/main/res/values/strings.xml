@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DN-Reader</string>
+    <string name="URL_button">Visit full website</string>
 </resources>

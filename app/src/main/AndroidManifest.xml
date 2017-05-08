@@ -20,7 +20,11 @@
         </activity>
         <activity
             android:name=".NewsActivity"
-            android:parentActivityName=".MainActivity" >></activity>
+            android:parentActivityName=".MainActivity">
+            >
+        </activity>
+        <activity android:name=".WebActivity"            >
+        </activity>
     </application>
 
 </manifest>
