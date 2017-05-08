@@ -82,6 +82,9 @@ public class RssParser {
             }
 
         }
+        Log.d("title", title);
+        Log.d("desc", description);
+        Log.d("url", url);
         return new NewsItem(title,description,url);
     }
 
@@ -158,6 +161,8 @@ public class RssParser {
                             XmlPullParser parser = xmlFactoryObject.newPullParser();
                             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                             parser.setInput(stream, null);
+                            parser.nextTag();
+                            parser.nextTag();
                             parse(parser);
                             stream.close();
 
