@@ -3,8 +3,10 @@ package com.johan.dn_reader;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,7 +45,7 @@ public class RssParser {
                     news.add(readItem(parser));
                 }else{
                     // Function used to move parser to next tag of interest
-                    skip.(parser);
+                    skip(parser);
                 }
                 // Alert when parsing is done.
             }
@@ -59,19 +61,52 @@ public class RssParser {
     }
 
     // Process title-tags
-    private String readTitle(XmlPullParser parser){
+    private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "title");
+        String title = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "title");
+        return title;
 
-        return null;
     }
     // Process description-tags
-    private String readDescription(XmlPullParser parser){
-
-        return null;
+    private String readDescription(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "description");
+        String description = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "description");
+        return description;
     }
     // Process link-tags (URL´s)
-    private String readLink(XmlPullParser parser){
+    private String readLink(XmlPullParser parser) throws IOException, XmlPullParserException{
+        parser.require(XmlPullParser.START_TAG, ns, "link");
+        String link = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "link");
+        return link;
+    }
 
-        return null;
+    private String readText(XmlPullParser parser) throws IOException, XmlPullParserException{
+        String result = "";
+        if (parser.next() == XmlPullParser.TEXT) {
+            result = parser.getText();
+            parser.nextTag();
+        }
+        return result;
+    }
+
+    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if (parser.getEventType() != XmlPullParser.START_TAG) {
+            throw new IllegalStateException();
+        }
+        int depth = 1;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    break;
+            }
+        }
     }
 
 
@@ -92,13 +127,13 @@ public class RssParser {
                             conn.connect();
                             // Future fet: Toast if network is disabled.
 
-                            // Create XMLParser.
+                            // Create XMLParser. Start it and close ntw-stream when done.
                             InputStream stream = conn.getInputStream();
                             XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
                             XmlPullParser parser = xmlFactoryObject.newPullParser();
                             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                             parser.setInput(stream, null);
-                            // Start parsing
+                            parse(parser);
                             stream.close();
 
                         }catch(Exception e){
