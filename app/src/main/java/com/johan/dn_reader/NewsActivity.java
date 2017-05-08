@@ -32,13 +32,13 @@ public class NewsActivity extends AppCompatActivity {
         description.setText(text);
     }
 
-        public void openWeb(View view){
-            Intent intent = new Intent(this, WebActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("link", link);
-            bundle.putString("title", title);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
+    public void openWeb(View view) {
+        Intent intent = new Intent(this, WebActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("url", link);
+        bundle.putString("title", title);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
+}
 

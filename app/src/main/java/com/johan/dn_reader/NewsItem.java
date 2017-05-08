@@ -9,15 +9,25 @@ public class NewsItem {
     private String text;
     private String url;
 
-    public NewsItem(String title, String text, String url){
+    public NewsItem(String title, String text, String url) {
         this.title = title;
         this.text = text;
         this.url = url;
     }
 
-    public String getTitle(){return title;}
-    public String getText(){return text;}
-    public String getUrl(){return url;}
+    public String getTitle() {
+        return title;
+    }
 
-    public String toString(){return title;}
+    public String getText() {
+        return text;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String toString() {
+        return title;
+    }
 }

@@ -23,8 +23,8 @@
             android:parentActivityName=".MainActivity">
             >
         </activity>
-        <activity android:name=".WebActivity"            >
-        </activity>
+        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".SwipeActivity"></activity>
     </application>
 
 </manifest>

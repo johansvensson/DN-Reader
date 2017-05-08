@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         RssParser rss = new RssParser(urlToParse);
         rss.startParse();
 
-        while(rss.parserWorking); // Do nothing and wait until parser is done. Maybe change this solution later?
+        while (rss.parserWorking) ; // Do nothing and wait until parser is done.
         list = (ListView) findViewById(R.id.list);
         ArrayList<NewsItem> news = rss.getNews();
 
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
     }
